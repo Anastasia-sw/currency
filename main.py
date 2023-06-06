@@ -1,12 +1,28 @@
 from currency_converter import CurrencyConverter
 from tkinter import *
 
+def check_user_input(input):
+    try:
+        # Convert it into integer
+        val = int(input)
+        return val
+    except ValueError:
+        try:
+            # Convert it into float
+            val = float(input)
+            return val
+        except ValueError:
+            print("No.. input is not a number. It's a string")
+
 def exchange():
     e_usd.delete(0,END)
     e_gbp.delete(0,END)
 
-    e_usd.insert(0, '%.2f' % currency.convert(e_input.get(), to_currency, "USD"))
-    e_gbp.insert(0, '%.2f' % currency.convert(e_input.get(), to_currency, 'GBP'))
+    val = abs(check_user_input(e_input.get()) or 0)
+
+    e_usd.insert(0, '%.2f' % currency.convert(val, to_currency, "USD"))
+    e_gbp.insert(0, '%.2f' % currency.convert(val, to_currency, 'GBP'))
+
 
 # The default supported currencies are:
 # {'GBP', 'THB', 'HRK', 'INR', 'NOK', 'KRW', 'ILS', 'BGN', 'CZK', 'TRL', 'PHP', 'USD', 'ZAR',
@@ -19,7 +35,7 @@ tk_root = Tk()
 tk_root.title('konverter valut')
 tk_root.geometry('400x300+300+300')
 tk_root.resizable(width=False, height=False)
-#tk_root['bg'] = 'black'
+tk_root['bg'] = 'black'
 
 currency = CurrencyConverter()
 to_currency = "EUR"
@@ -34,7 +50,7 @@ Label(header_frame, text='Курс', bg='black', fg='lime', font='Areal 12 bold'
     grid(row=0, column=2, sticky=EW)
 
 # USD
-Label(header_frame, text="USD", font='Areal 10').\
+Label(header_frame, text="USD", bg="black", fg='lime', font='Areal 10 bold').\
     grid(row=1, column=0, sticky=EW)
 Label(header_frame, text='1', font='Areal 10').\
     grid(row=1, column=1, sticky=EW)
@@ -42,7 +58,7 @@ Label(header_frame, text='%.2f' % currency.convert(1, "USD", to_currency), font=
     grid(row=1, column=2, sticky=EW)
 
 # GBP
-Label(header_frame, text='GBP', font='Areal 10').\
+Label(header_frame, text='GBP', bg='black', fg='lime', font='Areal 10 bold').\
     grid(row=3, column=0, sticky=EW)
 Label(header_frame, text='1', font='Areal 10').\
     grid(row=3, column=1, sticky=EW)
@@ -53,13 +69,15 @@ calc_frame = header_frame # Frame(tk_root, bg='white')
 #calc_frame.pack(expand=1, fill=BOTH)
 #calc_frame.grid_columnconfigure(1, weight=1)
 
-# UA
-Label(calc_frame, text='Grivni: ', bg='black', fg='lime', font='Arial 12 bold').\
+# EUR
+Label(calc_frame, text='EUR: ', bg='black', fg='lime', font='Arial 12 bold').\
     grid(row=4, column=0, padx=10)
 e_input = Entry(calc_frame, justify=CENTER, font='Arial 10')
 e_input.grid(row=4, column=1, columnspan=2, pady=10, padx=10, sticky=EW)
 
-btn_calc = Button(calc_frame, text='converter', command=exchange).\
+
+
+btn_calc = Button(calc_frame, text='converter', bg='lime', fg='black', font='Arial 10 bold', command=exchange).\
     grid(row=5, column=0,  columnspan=3)
 #btn_calc.pack(expand=1, fill=BOTH, pady=5)
 
@@ -69,13 +87,13 @@ res_frame = header_frame # Frame(tk_root)
 # res_frame.grid_columnconfigure(1, weight=1)
 
 # USD
-Label(res_frame, text="USD", font='Arial 10 bold').\
+Label(res_frame, text="USD", bg='black', fg='lime',  font='Arial 10 bold').\
     grid(row=6, column=0)
 e_usd = Entry(res_frame, justify=CENTER, font='Arial 10')
 e_usd.grid(row=6, column=1, padx=10, sticky=EW)
 
 # GBP
-Label(res_frame, text='GBP', font='Arial 10 bold').\
+Label(res_frame, text='GBP', bg='black', fg='lime', font='Arial 10 bold').\
     grid(row=7, column=0)
 e_gbp = Entry(res_frame, justify=CENTER, font='Arial 10')
 e_gbp.grid(row=7, column=1, padx=10, sticky=EW)
